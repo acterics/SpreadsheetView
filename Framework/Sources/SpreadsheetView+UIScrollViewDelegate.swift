@@ -19,7 +19,7 @@ extension SpreadsheetView: UIScrollViewDelegate {
             tableView.delegate = self
         }
 
-        if tableView.contentOffset.x < 0 && !stickyColumnHeader {
+        if tableView.contentOffset.x < 0, !stickyColumnHeader {
             let offset = tableView.contentOffset.x * -1
             cornerView.frame.origin.x = offset
             columnHeaderView.frame.origin.x = offset
@@ -27,7 +27,7 @@ extension SpreadsheetView: UIScrollViewDelegate {
             cornerView.frame.origin.x = 0
             columnHeaderView.frame.origin.x = 0
         }
-        if tableView.contentOffset.y < 0 && !stickyRowHeader {
+        if tableView.contentOffset.y < 0, !stickyRowHeader {
             let offset = tableView.contentOffset.y * -1
             cornerView.frame.origin.y = offset
             rowHeaderView.frame.origin.y = offset
@@ -54,5 +54,25 @@ extension SpreadsheetView: UIScrollViewDelegate {
     @available(iOS 11.0, *)
     public func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
         resetScrollViewFrame()
+    }
+
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView,
+                                          withVelocity velocity: CGPoint,
+                                          targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        switch scrollView {
+            case rowHeaderView:
+                delegate?.spreadsheetViewRowHeaderWillEndDragging(scrollView,
+                                                                  withVelocity: velocity,
+                                                                  targetContentOffset: targetContentOffset)
+            case columnHeaderView:
+                delegate?.spreadsheetViewRowHeaderWillEndDragging(scrollView,
+                                                                  withVelocity: velocity,
+                                                                  targetContentOffset: targetContentOffset)
+            case tableView:
+                delegate?.spreadsheetViewContentWillEndDragging(scrollView,
+                                                                withVelocity: velocity,
+                                                                targetContentOffset: targetContentOffset)
+            default: break
+        }
     }
 }

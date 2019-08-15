@@ -6,15 +6,16 @@
 //  Copyright © 2017 Kishikawa Katsumi. All rights reserved.
 //
 
-import UIKit
 import SpreadsheetView
+import UIKit
 
 class ViewController: UIViewController, SpreadsheetViewDataSource, SpreadsheetViewDelegate {
-    @IBOutlet weak var spreadsheetView: SpreadsheetView!
+    @IBOutlet var spreadsheetView: SpreadsheetView!
 
     let channels = [
         "ABC", "NNN", "BBC", "J-Sports", "OK News", "SSS", "Apple", "CUK", "KKR", "APAR",
-        "SU", "CCC", "Game", "Anime", "Tokyo NX", "NYC", "SAN", "Drama", "Hobby", "Music"]
+        "SU", "CCC", "Game", "Anime", "Tokyo NX", "NYC", "SAN", "Drama", "Hobby", "Music"
+    ]
 
     let numberOfRows = 24 * 60 + 1
     var slotInfo = [IndexPath: (Int, Int)]()
@@ -38,7 +39,7 @@ class ViewController: UIViewController, SpreadsheetViewDataSource, SpreadsheetVi
         spreadsheetView.register(BlankCell.self, forCellWithReuseIdentifier: String(describing: BlankCell.self))
 
         spreadsheetView.backgroundColor = .black
-        
+
         let hairline = 1 / UIScreen.main.scale
         spreadsheetView.intercellSpacing = CGSize(width: hairline, height: hairline)
         spreadsheetView.gridStyle = .solid(width: hairline, color: .lightGray)
@@ -90,6 +91,26 @@ class ViewController: UIViewController, SpreadsheetViewDataSource, SpreadsheetVi
         return 1
     }
 
+    func spreadsheetViewRowHeaderWillEndDragging(_ scrollView: UIScrollView,
+                                                 withVelocity velocity: CGPoint,
+                                                 targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let width: CGFloat = 130
+        var cellIndex = floor(targetContentOffset.pointee.x / width)
+        if (targetContentOffset.pointee.x - (floor(targetContentOffset.pointee.x / width) * width)) > width {
+            cellIndex += 1
+        }
+        targetContentOffset.pointee.x = cellIndex * width
+    }
+
+    func spreadsheetViewContentWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let width: CGFloat = 130
+        var cellIndex = floor(targetContentOffset.pointee.x / width)
+        if (targetContentOffset.pointee.x - (floor(targetContentOffset.pointee.x / width) * width)) > width {
+            cellIndex += 1
+        }
+        targetContentOffset.pointee.x = cellIndex * width
+    }
+
     func mergedCells(in spreadsheetView: SpreadsheetView) -> [CellRange] {
         var mergedCells = [CellRange]()
 
@@ -116,18 +137,18 @@ class ViewController: UIViewController, SpreadsheetViewDataSource, SpreadsheetVi
     }
 
     func spreadsheetView(_ spreadsheetView: SpreadsheetView, cellForItemAt indexPath: IndexPath) -> Cell? {
-        if indexPath.column == 0 && indexPath.row == 0 {
+        if indexPath.column == 0, indexPath.row == 0 {
             return nil
         }
 
-        if indexPath.column == 0 && indexPath.row > 0 {
+        if indexPath.column == 0, indexPath.row > 0 {
             let cell = spreadsheetView.dequeueReusableCell(withReuseIdentifier: String(describing: HourCell.self), for: indexPath) as! HourCell
             cell.label.text = hourFormatter.string(from: twelveHourFormatter.date(from: "\((indexPath.row - 1) / 60 % 24)")!)
             cell.gridlines.top = .solid(width: 1, color: .white)
             cell.gridlines.bottom = .solid(width: 1, color: .white)
             return cell
         }
-        if indexPath.column > 0 && indexPath.row == 0 {
+        if indexPath.column > 0, indexPath.row == 0 {
             let cell = spreadsheetView.dequeueReusableCell(withReuseIdentifier: String(describing: ChannelCell.self), for: indexPath) as! ChannelCell
             cell.label.text = channels[indexPath.column - 1]
             cell.gridlines.top = .solid(width: 1, color: .black)
