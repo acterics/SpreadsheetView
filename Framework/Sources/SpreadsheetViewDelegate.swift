@@ -90,6 +90,7 @@ public protocol SpreadsheetViewDelegate: class {
     func spreadsheetViewContentWillEndDragging(_ scrollView: UIScrollView,
                                                withVelocity velocity: CGPoint,
                                                targetContentOffset: UnsafeMutablePointer<CGPoint>)
+    func spreadsheetViewContentDidScroll(_ scrollView: UIScrollView)
 }
 
 public extension SpreadsheetViewDelegate {
@@ -109,4 +110,6 @@ public extension SpreadsheetViewDelegate {
     func spreadsheetViewContentWillEndDragging(_ scrollView: UIScrollView,
                                                withVelocity velocity: CGPoint,
                                                targetContentOffset: UnsafeMutablePointer<CGPoint>) {}
+    
+    func spreadsheetViewContentDidScroll(_ scrollView: UIScrollView) {}
 }
