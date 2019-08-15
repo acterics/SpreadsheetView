@@ -65,9 +65,9 @@ extension SpreadsheetView: UIScrollViewDelegate {
                                                                   withVelocity: velocity,
                                                                   targetContentOffset: targetContentOffset)
             case columnHeaderView:
-                delegate?.spreadsheetViewRowHeaderWillEndDragging(scrollView,
-                                                                  withVelocity: velocity,
-                                                                  targetContentOffset: targetContentOffset)
+                delegate?.spreadsheetViewColumnHeaderWillEndDragging(scrollView,
+                                                                     withVelocity: velocity,
+                                                                     targetContentOffset: targetContentOffset)
             case tableView:
                 delegate?.spreadsheetViewContentWillEndDragging(scrollView,
                                                                 withVelocity: velocity,
