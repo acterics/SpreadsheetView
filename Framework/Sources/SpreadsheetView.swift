@@ -356,6 +356,7 @@ public class SpreadsheetView: UIView {
         rootView.showsHorizontalScrollIndicator = false
         rootView.showsVerticalScrollIndicator = false
         rootView.delegate = self
+        rootView.backgroundColor = .clear
         super.addSubview(rootView)
 
         tableView.frame = bounds
@@ -364,6 +365,7 @@ public class SpreadsheetView: UIView {
         tableView.showsHorizontalScrollIndicator = false
         tableView.showsVerticalScrollIndicator = false
         tableView.delegate = self
+        tableView.backgroundColor = .clear
 
         columnHeaderView.frame = bounds
         columnHeaderView.frame.size.width = 0
@@ -373,6 +375,7 @@ public class SpreadsheetView: UIView {
         columnHeaderView.showsVerticalScrollIndicator = false
         columnHeaderView.isHidden = true
         columnHeaderView.delegate = self
+        columnHeaderView.backgroundColor = .clear
 
         rowHeaderView.frame = bounds
         rowHeaderView.frame.size.height = 0
@@ -382,15 +385,18 @@ public class SpreadsheetView: UIView {
         rowHeaderView.showsVerticalScrollIndicator = false
         rowHeaderView.isHidden = true
         rowHeaderView.delegate = self
+        rowHeaderView.backgroundColor = .clear
 
         cornerView.autoresizesSubviews = false
         cornerView.isHidden = true
         cornerView.delegate = self
+        cornerView.backgroundColor = .clear
 
         overlayView.frame = bounds
         overlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         overlayView.autoresizesSubviews = false
         overlayView.isUserInteractionEnabled = false
+        overlayView.backgroundColor = .clear
 
         rootView.addSubview(tableView)
         rootView.addSubview(columnHeaderView)
